@@ -10,13 +10,17 @@ export function ClientHelpSection() {
             <LifeBuoy className="h-6 w-6" />
           </div>
           <div className="flex-1">
-            <h3 className="font-display text-xl md:text-2xl font-bold mb-2">Нужна помощь с долгами?</h3>
+            <h3 className="font-display text-xl md:text-2xl font-bold mb-2">
+              Нужна помощь с долгами?
+            </h3>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              Если у вас есть кредиты, микрозаймы, просрочки, исполнительные производства или давление кредиторов, оставьте заявку. Юрист проведёт первичную консультацию и объяснит возможные варианты решения.
+              Если у вас есть кредиты, микрозаймы, просрочки, исполнительные производства или
+              давление кредиторов, оставьте заявку. Юрист проведёт первичную консультацию и объяснит
+              возможные варианты решения.
             </p>
           </div>
           <Button asChild variant="outline" size="lg" className="shrink-0">
-            <a href="#client-form">Получить консультацию</a>
+            <a href="#req-client">Передать клиента</a>
           </Button>
         </div>
       </div>

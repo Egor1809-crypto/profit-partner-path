@@ -1,33 +1,82 @@
-import { Card } from "@/components/ui/card";
-import {
-  Users, Home as HomeIcon, Calculator, Briefcase, Megaphone, Video, Globe, User,
-  Wallet, MapPin, MessageCircle, CheckCircle2, Wifi
-} from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
+
+const services = [
+  {
+    number: "01",
+    title: "Приём заявки",
+    text: "Партнёр передаёт контакт клиента через форму, личный кабинет или согласованный канал.",
+    image: "/assets/services/consultation-glass.webp",
+    imageAlt: "Стеклянная фигура диалога",
+  },
+  {
+    number: "02",
+    title: "Правовой анализ",
+    text: "Юристы проверяют долги, доходы, имущество, документы и возможные риски до заключения договора.",
+    image: "/assets/services/analysis-glass.webp",
+    imageAlt: "Стеклянная лупа над документом",
+  },
+  {
+    number: "03",
+    title: "Подготовка документов",
+    text: "Команда собирает пакет документов и объясняет клиенту возможный порядок процедуры.",
+    image: "/assets/services/documents-glass.webp",
+    imageAlt: "Стеклянные листы документов",
+  },
+  {
+    number: "04",
+    title: "Сопровождение клиента",
+    text: "Если процедура подходит, специалисты ведут юридическое сопровождение на согласованных условиях.",
+    image: "/assets/services/guidance-glass.webp",
+    imageAlt: "Стеклянный щит с маршрутом",
+  },
+];
 
 export function ForWhomSection() {
-  const items = [
-    { icon: Briefcase, title: "Юристам", text: "Расширьте список услуг для клиентов и получайте вознаграждение за переданные заявки по банкротству." },
-    { icon: HomeIcon, title: "Риелторам", text: "Клиентам отказывают в ипотеке из-за долгов — направляйте их на консультацию и зарабатывайте." },
-    { icon: Wallet, title: "Ипотечным брокерам", text: "Помогите клиенту разобраться с долговой нагрузкой, чтобы он мог одобрить ипотеку позже." },
-    { icon: Calculator, title: "Бухгалтерам и финконсультантам", text: "Ваши клиенты часто сталкиваются с долгами — у вас есть готовая аудитория для рекомендации." },
-    { icon: Megaphone, title: "Маркетологам и веб-мастерам", text: "Монетизируйте трафик и лидогенерацию в нише долгов и финансов." },
-    { icon: Video, title: "Блогерам и SMM-специалистам", text: "Тема банкротства актуальна — превращайте аудиторию в стабильный доход." },
-    { icon: Globe, title: "Владельцам сайтов", text: "Получайте партнёрское вознаграждение за заявки с тематических ресурсов." },
-    { icon: User, title: "Физическим лицам", text: "Не нужно быть юристом — достаточно рекомендовать услугу знакомым и коллегам." },
-  ];
   return (
-    <section id="for-whom" className="py-20 lg:py-28 bg-surface">
-      <div className="container mx-auto px-4 lg:px-8">
-        <SectionHeader eyebrow="Аудитория программы" title="Кому подходит партнёрская программа" subtitle="Подключиться может практически любой, кто общается с людьми и сталкивается с темой долгов." />
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {items.map(({ icon: Icon, title, text }) => (
-            <Card key={title} className="p-6 hover:shadow-[var(--shadow-elevated)] transition-shadow border-border">
-              <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-primary mb-4">
-                <Icon className="h-5 w-5" />
+    <section id="services" className="bg-background py-20 lg:py-28">
+      <div className="mx-auto grid max-w-7xl gap-12 px-5 lg:grid-cols-[0.85fr_1.15fr] lg:px-10">
+        <div>
+          <SectionHeader
+            eyebrow="// Услуги"
+            title="Что происходит после передачи клиента на банкротство физлиц"
+          />
+          <p className="max-w-md text-base leading-relaxed text-muted-foreground">
+            Вы приводите человека, которому нужна юридическая помощь по долгам. Компания берёт на
+            себя правовую оценку, консультацию, проверку документов и сопровождение процедуры, если
+            она подходит клиенту.
+          </p>
+          <figure className="mt-8 overflow-hidden rounded-[1.6rem]">
+            <img
+              src="/assets/services/partner-consultation.webp"
+              alt="Консультация партнёра и клиента в светлом офисе"
+              className="aspect-[3/2] h-full w-full object-cover"
+            />
+          </figure>
+        </div>
+        <div className="divide-y divide-border border-y border-border">
+          {services.map((service) => (
+            <div
+              key={service.number}
+              tabIndex={0}
+              className="group relative grid gap-4 overflow-hidden bg-white py-6 outline-none transition-colors sm:grid-cols-[4rem_1fr] sm:items-center lg:min-h-[11rem] lg:grid-cols-[4rem_minmax(0,1fr)_12rem]"
+            >
+              <span className="font-display text-3xl text-primary/45">{service.number}</span>
+              <div>
+                <h3 className="font-display text-3xl uppercase">{service.title}</h3>
+                <p className="mt-2 max-w-lg text-sm leading-relaxed text-muted-foreground">
+                  {service.text}
+                </p>
               </div>
-              <h3 className="font-semibold text-base mb-2">{title}</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">{text}</p>
-            </Card>
+              <figure className="relative flex h-40 items-center justify-center sm:col-start-2 lg:col-start-3 lg:row-start-1">
+                <img
+                  src={service.image}
+                  alt={service.imageAlt}
+                  loading="lazy"
+                  className="service-glass-art h-40 w-40 object-contain lg:h-44 lg:w-44"
+                />
+              </figure>
+              <ArrowUpRight className="absolute right-1 top-1/2 hidden h-6 w-6 -translate-y-1/2 text-primary transition-all duration-300 group-hover:translate-x-2 group-hover:-translate-y-8 group-hover:opacity-0 group-focus-visible:opacity-0 lg:block" />
+            </div>
           ))}
         </div>
       </div>
@@ -35,14 +84,38 @@ export function ForWhomSection() {
   );
 }
 
-export function SectionHeader({ eyebrow, title, subtitle, dark }: { eyebrow?: string; title: string; subtitle?: string; dark?: boolean }) {
+export function SectionHeader({
+  eyebrow,
+  title,
+  subtitle,
+  dark,
+}: {
+  eyebrow?: string;
+  title: string;
+  subtitle?: string;
+  dark?: boolean;
+}) {
   return (
-    <div className="max-w-3xl mb-12 lg:mb-16">
-      {eyebrow && <div className={`inline-block text-xs font-semibold uppercase tracking-wider mb-3 px-3 py-1 rounded-full ${dark ? "bg-gold/15 text-gold" : "bg-primary/10 text-primary"}`}>{eyebrow}</div>}
-      <h2 className={`font-display text-3xl md:text-4xl lg:text-5xl font-bold leading-tight ${dark ? "text-white" : "text-foreground"}`}>{title}</h2>
-      {subtitle && <p className={`mt-4 text-lg ${dark ? "text-white/70" : "text-muted-foreground"}`}>{subtitle}</p>}
+    <div className="mb-10 max-w-3xl">
+      {eyebrow && (
+        <div
+          className={`mb-5 text-sm font-medium uppercase tracking-[0.18em] ${dark ? "text-white/65" : "text-primary"}`}
+        >
+          {eyebrow}
+        </div>
+      )}
+      <h2
+        className={`font-display text-4xl uppercase leading-[1.06] md:text-5xl lg:text-6xl ${dark ? "text-white" : "text-foreground"}`}
+      >
+        {title}
+      </h2>
+      {subtitle && (
+        <p
+          className={`mt-5 max-w-xl leading-relaxed ${dark ? "text-white/72" : "text-muted-foreground"}`}
+        >
+          {subtitle}
+        </p>
+      )}
     </div>
   );
 }
-
-export { Wallet, MapPin, MessageCircle, CheckCircle2, Wifi, Users };

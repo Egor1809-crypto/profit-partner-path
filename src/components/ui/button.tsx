@@ -17,7 +17,7 @@ const buttonVariants = cva(
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
         gold: "bg-gold text-gold-foreground shadow hover:opacity-90 font-semibold",
-        hero: "bg-gradient-to-br from-[oklch(0.78_0.13_80)] to-[oklch(0.68_0.15_70)] text-[oklch(0.18_0.03_260)] shadow-[var(--shadow-elevated)] hover:scale-[1.02] transition-transform font-semibold",
+        hero: "bg-gradient-to-br from-[oklch(0.91_0.055_220)] to-[oklch(0.78_0.105_232)] text-[oklch(0.31_0.13_250)] shadow-[var(--shadow-elevated)] hover:scale-[1.02] transition-transform font-semibold",
       },
       size: {
         default: "h-9 px-4 py-2",

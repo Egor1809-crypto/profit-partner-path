@@ -1,49 +1,81 @@
-import { Button } from "@/components/ui/button";
-import { Check, ShieldAlert } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
+
+const heroCards = [
+  { title: "Стать партнёром", href: "#req-partner" },
+  { title: "Передать клиента", href: "#req-client" },
+];
+
+const heroBenefits = [
+  "Выплаты за подтверждённые заявки",
+  "Первичная обработка до 24 часов",
+  "Статусы по каждому клиенту",
+];
+
+const heroSteps = ["Заявка фиксируется", "Юристы проводят оценку", "Партнёр получает выплату"];
 
 export function Hero() {
-  const perks = [
-    "Не нужно быть юристом",
-    "Можно работать из любого региона",
-    "Клиента консультируют специалисты",
-    "Выплата после заключения договора и оплаты",
-    "Заявки можно передавать удалённо",
-  ];
   return (
-    <section id="top" className="relative overflow-hidden text-white" style={{ background: "var(--gradient-hero)" }}>
-      <div className="absolute inset-0 opacity-[0.07]" style={{
-        backgroundImage: "radial-gradient(circle at 20% 20%, white 1px, transparent 1px), radial-gradient(circle at 70% 60%, white 1px, transparent 1px)",
-        backgroundSize: "60px 60px, 80px 80px",
-      }} />
-      <div className="absolute -top-40 -right-40 h-[500px] w-[500px] rounded-full opacity-20 blur-3xl" style={{ background: "var(--gradient-gold)" }} />
-      <div className="container relative mx-auto px-4 lg:px-8 py-20 lg:py-28">
-        <div className="max-w-4xl">
-          <div className="inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/15 px-4 py-1.5 text-xs font-medium mb-6 backdrop-blur">
-            <span className="h-2 w-2 rounded-full bg-gold animate-pulse" />
-            Партнёрская программа федеральной юридической компании
-          </div>
-          <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.05] tracking-tight">
-            Станьте партнёром юридической компании и <span className="text-gold">зарабатывайте</span> на передаче клиентов по банкротству
+    <section id="top" className="relative min-h-screen overflow-hidden bg-[#eef7ff] text-primary">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_18%,rgb(255_255_255_/_0.95),transparent_34%),linear-gradient(115deg,rgb(255_255_255_/_0.82)_0%,rgb(238_247_255_/_0.9)_45%,rgb(213_235_255_/_0.9)_100%)]" />
+      <div className="pointer-events-none absolute -bottom-36 left-0 h-72 w-72 rounded-full bg-white/80 blur-3xl" />
+      <div className="mx-auto grid min-h-screen max-w-[88rem] items-center gap-12 px-5 pb-10 pt-48 lg:grid-cols-[0.92fr_1.08fr] lg:px-10 lg:pb-14 lg:pt-40">
+        <div className="relative z-10 max-w-3xl">
+          <h1 className="font-display max-w-4xl text-[clamp(3rem,4.7vw,5.35rem)] font-medium uppercase leading-[1.02] tracking-[-0.045em]">
+            <span className="block">Зарабатывайте</span>
+            <span className="block">на передаче клиентов</span>
+            <span className="block">на банкротство физлиц</span>
           </h1>
-          <p className="mt-6 text-lg lg:text-xl text-white/75 max-w-3xl leading-relaxed">
-            Передавайте контакты людей с долгами, кредитами, МФО или исполнительными производствами. Мы консультируем клиента, ведём юридическую работу, а вы получаете вознаграждение после заключения договора.
+          <p className="mt-7 max-w-2xl text-base leading-relaxed text-primary/76 lg:text-lg">
+            Передавайте нам обращения клиентов с долгами. Юристы проверят ситуацию, свяжутся с
+            клиентом, объяснят возможный порядок процедуры и возьмут сопровождение, если банкротство
+            действительно подходит.
           </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Button asChild variant="hero" size="xl"><a href="#partner-form">Стать партнёром</a></Button>
-            <Button asChild size="xl" variant="outline" className="bg-white/5 border-white/20 text-white hover:bg-white/10 hover:text-white"><a href="#income">Узнать условия</a></Button>
-            <Button asChild size="xl" variant="ghost" className="text-white hover:bg-white/10 hover:text-white"><a href="#client-form">Передать клиента</a></Button>
-          </div>
-          <ul className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 max-w-4xl">
-            {perks.map(p => (
-              <li key={p} className="flex items-start gap-2.5 text-sm text-white/85">
-                <Check className="h-5 w-5 text-gold shrink-0 mt-0.5" />
-                <span>{p}</span>
-              </li>
+
+          <div className="mt-8 flex max-w-4xl items-center gap-3 overflow-x-auto pb-2 text-sm font-semibold text-primary sm:overflow-visible lg:text-base">
+            {heroSteps.map((step, index) => (
+              <div key={step} className="flex shrink-0 items-center gap-3">
+                <span className="whitespace-nowrap rounded-full bg-white/70 px-5 py-2.5 shadow-[0_14px_36px_rgb(29_85_136_/_0.08)] backdrop-blur-sm">
+                  {step}
+                </span>
+                {index < heroSteps.length - 1 ? (
+                  <span className="text-2xl text-primary/35">→</span>
+                ) : null}
+              </div>
             ))}
-          </ul>
-          <div className="mt-10 flex items-start gap-3 max-w-3xl rounded-lg border border-white/10 bg-white/5 p-4 text-xs text-white/60 leading-relaxed">
-            <ShieldAlert className="h-4 w-4 shrink-0 mt-0.5 text-white/50" />
-            <p>Результат по делу клиента зависит от его индивидуальной ситуации. Компания не гарантирует списание всех долгов и не призывает не исполнять денежные обязательства.</p>
+          </div>
+
+          <div className="mt-7 grid max-w-2xl gap-3 sm:grid-cols-3">
+            {heroBenefits.map((benefit) => (
+              <div
+                key={benefit}
+                className="border-l border-primary/25 bg-white/45 px-4 py-3 text-sm font-medium leading-snug text-primary/82 backdrop-blur-sm"
+              >
+                {benefit}
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-20 flex flex-col items-start gap-6 sm:flex-row sm:gap-10 lg:mt-24">
+            {heroCards.map((card) => (
+              <a
+                key={card.title}
+                href={card.href}
+                className="group inline-flex items-center gap-4 font-display text-3xl uppercase leading-tight text-foreground transition-colors hover:text-primary"
+              >
+                <span>{card.title}</span>
+                <ArrowUpRight className="h-6 w-6 text-primary transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+              </a>
+            ))}
+          </div>
+        </div>
+
+        <div className="relative z-10 hidden self-start pt-0 lg:block">
+          <div className="relative ml-auto max-w-[43rem] overflow-hidden rounded-[2.75rem] border border-white/80 bg-white/55 p-3 shadow-[0_32px_90px_rgb(27_91_150_/_0.18)] backdrop-blur-sm">
+            <img
+              src="/assets/hero/lawyer-portrait.webp"
+              alt="Юрист партнёрской программы в кабинете"
+              className="aspect-[0.96/1] w-full rounded-[2.15rem] object-cover object-center"
+            />
           </div>
         </div>
       </div>

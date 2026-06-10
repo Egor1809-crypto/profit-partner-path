@@ -1,30 +1,44 @@
-import { Card } from "@/components/ui/card";
+import { ArrowUpRight } from "lucide-react";
 import { SectionHeader } from "./ForWhomSection";
-import { UserCheck, BookOpen, MessageSquareQuote, ListChecks, MessagesSquare, Laptop } from "lucide-react";
 
-const tools = [
-  { i: UserCheck, t: "Персональный менеджер", d: "Куратор по вашим заявкам и вопросам по программе." },
-  { i: BookOpen, t: "Материалы для продвижения", d: "Готовые тексты, баннеры и презентации для использования в работе." },
-  { i: MessageSquareQuote, t: "Скрипты общения с клиентом", d: "Шаблоны для корректного разговора без юридических обещаний." },
-  { i: ListChecks, t: "Отслеживание заявок", d: "Понятная отчётность по статусу каждой переданной заявки." },
-  { i: MessagesSquare, t: "Обратная связь по лидам", d: "Узнаёте, по каким причинам клиент дошёл или не дошёл до договора." },
-  { i: Laptop, t: "Удалённый формат работы", d: "Передавайте клиентов из любого региона России — без офиса и встреч." },
+const articles = [
+  {
+    title: "5 признаков, что клиента пора передать юристу",
+    text: "Когда не стоит откладывать первичную правовую оценку ситуации по долгам.",
+    date: "14.04.2026",
+  },
+  {
+    title: "Что нельзя обещать клиенту при передаче заявки",
+    text: "Формулировки для партнёра без гарантий результата и юридических рисков.",
+    date: "13.04.2026",
+  },
+  {
+    title: "Чек-лист документов для первичной оценки",
+    text: "Какие данные помогают юристу быстрее понять ситуацию клиента.",
+    date: "08.04.2026",
+  },
 ];
 
 export function ToolsSection() {
   return (
-    <section id="tools" className="py-20 lg:py-28">
-      <div className="container mx-auto px-4 lg:px-8">
-        <SectionHeader eyebrow="После подключения" title="Что получает партнёр после подключения" subtitle="Всё, что нужно, чтобы начать передавать заявки и получать вознаграждение." />
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {tools.map(({ i: Icon, t, d }) => (
-            <Card key={t} className="p-6 border-border hover:shadow-[var(--shadow-elevated)] transition-shadow">
-              <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-gold/15 text-gold mb-4">
-                <Icon className="h-5 w-5" />
-              </div>
-              <h3 className="font-semibold mb-2">{t}</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">{d}</p>
-            </Card>
+    <section id="blog" className="py-20 lg:py-28">
+      <div className="mx-auto max-w-7xl px-5 lg:px-10">
+        <SectionHeader eyebrow="// Блог" title="Полезные материалы для партнёров и клиентов" />
+        <div className="grid gap-px overflow-hidden rounded-md bg-border lg:grid-cols-3">
+          {articles.map((article) => (
+            <article
+              key={article.title}
+              className="flex min-h-72 flex-col bg-background p-6 lg:p-8"
+            >
+              <time className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                {article.date}
+              </time>
+              <h3 className="mt-8 font-display text-3xl uppercase leading-tight">
+                {article.title}
+              </h3>
+              <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{article.text}</p>
+              <ArrowUpRight className="mt-auto h-6 w-6 text-primary" />
+            </article>
           ))}
         </div>
       </div>

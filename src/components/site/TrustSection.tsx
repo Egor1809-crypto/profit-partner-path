@@ -1,31 +1,49 @@
 import { SectionHeader } from "./ForWhomSection";
 
 const stats = [
-  { n: "10+", l: "лет опыта" },
-  { n: "30+", l: "регионов работы" },
-  { n: "500+", l: "завершённых процедур" },
-  { n: "1 000+", l: "консультаций" },
-  { n: "50+", l: "активных партнёров" },
-  { n: "24 часа", l: "среднее время обработки заявки" },
+  { n: "17 000+", l: "завершённых процедур" },
+  { n: "11 лет", l: "опыта на рынке" },
+  { n: "800+", l: "партнёров доверяют нам" },
+  { n: "80+", l: "специалистов в команде" },
+  { n: "По всей России", l: "работаем удалённо и очно" },
 ];
 
 export function TrustSection() {
   return (
-    <section className="relative py-20 lg:py-28 text-white overflow-hidden" style={{ background: "var(--gradient-hero)" }}>
-      <div className="absolute -bottom-40 -left-40 h-[500px] w-[500px] rounded-full opacity-15 blur-3xl" style={{ background: "var(--gradient-gold)" }} />
-      <div className="container relative mx-auto px-4 lg:px-8">
-        <SectionHeader dark eyebrow="Доверие" title="Почему нам можно доверять клиентов" />
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {stats.map(s => (
-            <div key={s.l} className="rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur p-7">
-              <div className="font-display text-4xl lg:text-5xl font-bold text-gold mb-2">{s.n}</div>
-              <div className="text-white/75">{s.l}</div>
+    <section id="about" className="bg-primary py-20 text-white lg:py-28">
+      <div className="mx-auto max-w-7xl px-5 lg:px-10">
+        <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr]">
+          <SectionHeader
+            dark
+            eyebrow="// О компании"
+            title="Юридическая команда, которой можно доверить клиента"
+          />
+          <div>
+            <p className="text-lg leading-relaxed text-white/85">
+              Вы передаёте клиента на правовую оценку ситуации по банкротству физлиц. Юристы
+              проверяют документы, объясняют возможные варианты и сопровождают процедуру, если она
+              подходит клиенту.
+            </p>
+            <p className="mt-6 leading-relaxed text-white/70">
+              Мы не обещаем клиенту списание долгов до анализа ситуации. Итог зависит от документов,
+              доходов, имущества и судебной практики по конкретному делу.
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          {stats.map((stat) => (
+            <div
+              key={stat.l}
+              className="flex min-h-44 flex-col justify-between rounded-[1.25rem] border border-white/12 bg-[#0d1b32]/20 p-5 shadow-[inset_0_0_0_1px_rgb(255_255_255_/_0.05)] lg:min-h-48 lg:p-6"
+            >
+              <div className="font-display text-[clamp(2.35rem,3vw,3.5rem)] leading-[1.05] text-white">
+                {stat.n}
+              </div>
+              <div className="mt-5 max-w-40 text-sm leading-relaxed text-white/62">{stat.l}</div>
             </div>
           ))}
         </div>
-        <p className="mt-8 text-xs text-white/50 max-w-2xl">
-          * Цифры демонстрационные. Перед запуском сайта замените их на реальные данные компании.
-        </p>
       </div>
     </section>
   );
