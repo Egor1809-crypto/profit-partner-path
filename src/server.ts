@@ -182,8 +182,6 @@ async function handleTelegramRequest(request: Request, env: unknown): Promise<Re
     return jsonResponse({ ok: false, error: "Method not allowed" }, { status: 405 });
   }
 
-  const { TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID } = getRuntimeEnv(env);
-
   let payload: unknown;
   try {
     payload = await request.json();
@@ -195,58 +193,25 @@ async function handleTelegramRequest(request: Request, env: unknown): Promise<Re
     return jsonResponse({ ok: false, error: "Invalid payload" }, { status: 400 });
   }
 
-  // Durable capture first: persist the lead to the database. A failure here is
-  // logged but does not by itself drop the lead if Telegram delivery still works.
+  // Durable capture: persist the lead to PostgreSQL. This is the reliable channel.
+  // Telegram delivery is handled asynchronously by the host's background notifier
+  // (server.mjs) with retries, because api.telegram.org is heavily rate-throttled
+  // from this network and would otherwise stall or drop the user-facing request.
   let savedApplication: { saved: boolean; id?: number } = { saved: false };
-  let dbError: unknown = null;
   try {
     savedApplication = await saveApplication(env, payload as Record<string, unknown>);
   } catch (error) {
-    dbError = error;
     console.error("Application DB save error:", error);
   }
 
-  // Telegram notification is best-effort and optional. The lead is considered
-  // captured as long as at least one durable channel (DB or Telegram) succeeded.
-  let telegramSent = false;
-  if (TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID) {
-    try {
-      const telegramResponse = await fetch(
-        `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
-        {
-          method: "POST",
-          headers: { "content-type": "application/json" },
-          body: JSON.stringify({
-            chat_id: TELEGRAM_CHAT_ID,
-            text: formatTelegramMessage(payload as Record<string, unknown>),
-            parse_mode: "HTML",
-            disable_web_page_preview: true,
-          }),
-        },
-      );
-      telegramSent = telegramResponse.ok;
-      if (!telegramResponse.ok) {
-        console.error(`Telegram API error: ${telegramResponse.status}`);
-      }
-    } catch (error) {
-      console.error("Telegram request failed:", error);
-    }
-  }
-
-  // Nothing captured anywhere — surface a real failure so the user can retry.
-  if (!savedApplication.saved && !telegramSent) {
-    console.error("Lead capture failed: no durable channel succeeded", dbError ?? "");
+  if (!savedApplication.saved) {
     return jsonResponse(
       { ok: false, error: "Не удалось сохранить заявку. Попробуйте позже." },
       { status: 502 },
     );
   }
 
-  return jsonResponse({
-    ok: true,
-    application: savedApplication,
-    notified: telegramSent,
-  });
+  return jsonResponse({ ok: true, application: savedApplication });
 }
 
 type TelegramWebhookUpdate = {

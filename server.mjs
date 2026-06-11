@@ -2,6 +2,11 @@
 // Serves dist/client/* statically and routes everything else to the worker's fetch handler.
 // Injects a D1-compatible database shim backed by native PostgreSQL (node-postgres),
 // so the worker's env.DB works on this VPS exactly as it would on Cloudflare D1.
+import dns from "node:dns";
+// This host's IPv6 route to api.telegram.org is DPI-throttled; force IPv4 first so
+// outbound fetch() to Telegram (and everything else) doesn't stall on a dead IPv6 path.
+dns.setDefaultResultOrder("ipv4first");
+
 import { createServer } from "node:http";
 import { stat } from "node:fs/promises";
 import { createReadStream } from "node:fs";
@@ -29,10 +34,11 @@ const worker = (await import("./dist/server/index.js")).default;
 // The worker code (src/server.ts) speaks the minimal D1 API: prepare(sql).bind(...).run()/.all().
 // We back it with native Postgres. `?` placeholders are rewritten to `$1,$2,...`.
 let db;
+let pool;
 if (process.env.DATABASE_URL) {
   try {
     const { default: pg } = await import("pg");
-    const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL, max: 5 });
+    pool = new pg.Pool({ connectionString: process.env.DATABASE_URL, max: 5 });
     pool.on("error", (err) => console.error("[pg] idle client error:", err));
     db = makeD1(pool);
     // Fail fast / loud if the DB is unreachable at boot.
@@ -45,6 +51,105 @@ if (process.env.DATABASE_URL) {
   }
 } else {
   console.warn("[pg] DATABASE_URL not set — leads will not be persisted to the database");
+}
+
+// --- Background Telegram notifier --------------------------------------------
+// api.telegram.org is DPI-throttled from this host (~20% success per attempt), so
+// notifying synchronously would stall the form. Leads are always saved to Postgres;
+// this loop delivers them to Telegram with automatic retries and marks them notified.
+const TG_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
+const TG_CHAT = process.env.TELEGRAM_CHAT_ID;
+const NOTIFY_INTERVAL_MS = Number(process.env.NOTIFY_INTERVAL_MS || 15000);
+
+const TG_LABELS = {
+  name: "Имя",
+  phone: "Телефон",
+  city: "Город",
+  field: "Сфера деятельности",
+  hasClients: "Есть потенциальные клиенты",
+  volume: "Заявок в месяц",
+  channel: "Удобная связь",
+  comment: "Комментарий",
+  pname: "Имя партнёра",
+  pphone: "Телефон партнёра",
+  cname: "Имя клиента",
+  cphone: "Телефон клиента",
+  ccity: "Город клиента",
+  debt: "Сумма долга",
+  requestType: "Тип заявки",
+};
+
+function escTg(v) {
+  return String(v ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+function buildLeadMessage(payload) {
+  const type =
+    payload.type === "client" ? "Заявка: передать клиента" : "Заявка на партнёрство";
+  const lines = [`<b>${escTg(type)}</b>`];
+  for (const [key, label] of Object.entries(TG_LABELS)) {
+    const value = payload[key];
+    if (value === undefined || value === null || value === "") continue;
+    lines.push(`<b>${escTg(label)}:</b> ${escTg(value)}`);
+  }
+  lines.push("");
+  lines.push("<i>Источник: сайт партнёрской программы</i>");
+  return lines.join("\n").slice(0, 3900);
+}
+
+async function sendTelegram(text) {
+  const res = await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({
+      chat_id: TG_CHAT,
+      text,
+      parse_mode: "HTML",
+      disable_web_page_preview: true,
+    }),
+  });
+  return res.ok;
+}
+
+let notifierBusy = false;
+async function notifierTick() {
+  if (notifierBusy || !pool || !TG_TOKEN || !TG_CHAT) return;
+  notifierBusy = true;
+  try {
+    const { rows } = await pool.query(
+      "SELECT id, payload_json FROM applications WHERE notified = false ORDER BY id ASC LIMIT 5",
+    );
+    for (const row of rows) {
+      let payload = {};
+      try {
+        payload = JSON.parse(row.payload_json);
+      } catch {
+        payload = {};
+      }
+      try {
+        if (await sendTelegram(buildLeadMessage(payload))) {
+          await pool.query("UPDATE applications SET notified = true WHERE id = $1", [row.id]);
+          console.log(`[notify] lead #${row.id} delivered to Telegram`);
+        }
+      } catch {
+        // Throttled — leave notified=false and retry on the next tick.
+      }
+    }
+  } catch (err) {
+    console.error("[notify] tick error:", err.message);
+  } finally {
+    notifierBusy = false;
+  }
+}
+
+if (pool && TG_TOKEN && TG_CHAT) {
+  setInterval(notifierTick, NOTIFY_INTERVAL_MS);
+  console.log("[notify] background Telegram notifier started");
+} else {
+  console.warn("[notify] disabled (need DATABASE_URL + TELEGRAM_BOT_TOKEN + TELEGRAM_CHAT_ID)");
 }
 
 function translatePlaceholders(sql) {

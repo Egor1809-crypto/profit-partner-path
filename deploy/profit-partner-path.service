@@ -10,7 +10,9 @@ Environment=HOST=127.0.0.1
 Environment=PORT=3200
 # Secrets & DB connection (DATABASE_URL, Telegram tokens, webhook secrets). chmod 600.
 EnvironmentFile=/opt/profit-partner-path/.env
-ExecStart=/usr/bin/node server.mjs
+# Force IPv4 for outbound: this host's IPv6 path to api.telegram.org is DPI-throttled,
+# so Node's happy-eyeballs must prefer IPv4 or Telegram sends hang.
+ExecStart=/usr/bin/node --dns-result-order=ipv4first server.mjs
 Restart=always
 RestartSec=2
 User=www-data
