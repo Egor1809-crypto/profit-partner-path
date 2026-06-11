@@ -84,9 +84,31 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "Передавайте клиентов на правовую оценку по банкротству физлиц. Юристы проверяют обращение, сопровождают процедуру, партнёр получает вознаграждение.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://aspb-partner.ru/" },
+      { property: "og:site_name", content: "ASPB Partners" },
+      { property: "og:locale", content: "ru_RU" },
+      { property: "og:image", content: "https://aspb-partner.ru/og-cover.png" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { name: "twitter:card", content: "summary_large_image" },
+      {
+        name: "twitter:title",
+        content: "ASPB Partners — партнёрская программа по банкротству физлиц",
+      },
+      {
+        name: "twitter:description",
+        content:
+          "Передавайте клиентов на правовую оценку по банкротству физлиц и получайте вознаграждение за качественные заявки.",
+      },
+      { name: "twitter:image", content: "https://aspb-partner.ru/og-cover.png" },
+      { name: "robots", content: "index, follow, max-image-preview:large" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
+      { rel: "canonical", href: "https://aspb-partner.ru/" },
+      { rel: "icon", href: "/favicon.ico", sizes: "any" },
+      { rel: "icon", type: "image/png", href: "/favicon-32x32.png", sizes: "32x32" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {

@@ -12,6 +12,7 @@ import { WebinarsSection } from "@/components/site/WebinarsSection";
 import { PartnerForm } from "@/components/site/Forms";
 import { ContactsSection } from "@/components/site/ContactsSection";
 import { Footer } from "@/components/site/Footer";
+import { StickyMobileCTA } from "@/components/site/StickyMobileCTA";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -35,6 +36,7 @@ function Index() {
         <ContactsSection />
       </main>
       <Footer />
+      <StickyMobileCTA />
     </div>
   );
 }

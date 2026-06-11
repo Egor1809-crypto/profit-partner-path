@@ -33,11 +33,13 @@ export function Header() {
           </a>
 
           <nav className="ml-auto flex flex-1 items-center justify-end gap-8 whitespace-nowrap text-[0.8rem] font-semibold uppercase tracking-[0.13em] text-primary/80 lg:gap-10 lg:text-[0.88rem]">
-            {navLinks.map((link) => (
-              <a key={link.href} href={link.href} className="transition-opacity hover:opacity-60">
-                {link.label}
-              </a>
-            ))}
+            <div className="hidden items-center gap-8 lg:flex lg:gap-10">
+              {navLinks.map((link) => (
+                <a key={link.href} href={link.href} className="transition-opacity hover:opacity-60">
+                  {link.label}
+                </a>
+              ))}
+            </div>
             <Button
               asChild
               variant="outline"

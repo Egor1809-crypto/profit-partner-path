@@ -1,0 +1,10 @@
+{
+  "name": "profit-partner-path-runtime",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Runtime deps for the Node production server (server.mjs). Not the app build.",
+  "dependencies": {
+    "pg": "^8.13.1"
+  }
+}

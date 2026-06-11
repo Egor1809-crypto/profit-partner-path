@@ -12,7 +12,10 @@ type TelegramEnv = {
   TELEGRAM_CHAT_ID?: string;
   FAQ_TELEGRAM_BOT_TOKEN?: string;
   FAQ_TELEGRAM_CHAT_ID?: string;
+  FAQ_WEBHOOK_SECRET?: string;
   ADMIN_TELEGRAM_BOT_TOKEN?: string;
+  ADMIN_TELEGRAM_CHAT_ID?: string;
+  ADMIN_WEBHOOK_SECRET?: string;
   ADMIN_SITE_URL?: string;
   DB?: D1DatabaseLike;
 };
@@ -64,8 +67,12 @@ function getRuntimeEnv(env: unknown): TelegramEnv {
     TELEGRAM_CHAT_ID: workerEnv.TELEGRAM_CHAT_ID ?? processEnv?.TELEGRAM_CHAT_ID,
     FAQ_TELEGRAM_BOT_TOKEN: workerEnv.FAQ_TELEGRAM_BOT_TOKEN ?? processEnv?.FAQ_TELEGRAM_BOT_TOKEN,
     FAQ_TELEGRAM_CHAT_ID: workerEnv.FAQ_TELEGRAM_CHAT_ID ?? processEnv?.FAQ_TELEGRAM_CHAT_ID,
+    FAQ_WEBHOOK_SECRET: workerEnv.FAQ_WEBHOOK_SECRET ?? processEnv?.FAQ_WEBHOOK_SECRET,
     ADMIN_TELEGRAM_BOT_TOKEN:
       workerEnv.ADMIN_TELEGRAM_BOT_TOKEN ?? processEnv?.ADMIN_TELEGRAM_BOT_TOKEN,
+    ADMIN_TELEGRAM_CHAT_ID:
+      workerEnv.ADMIN_TELEGRAM_CHAT_ID ?? processEnv?.ADMIN_TELEGRAM_CHAT_ID,
+    ADMIN_WEBHOOK_SECRET: workerEnv.ADMIN_WEBHOOK_SECRET ?? processEnv?.ADMIN_WEBHOOK_SECRET,
     ADMIN_SITE_URL: workerEnv.ADMIN_SITE_URL ?? processEnv?.ADMIN_SITE_URL,
     DB: workerEnv.DB,
   };
@@ -177,16 +184,6 @@ async function handleTelegramRequest(request: Request, env: unknown): Promise<Re
 
   const { TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID } = getRuntimeEnv(env);
 
-  if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
-    return jsonResponse(
-      {
-        ok: false,
-        error: "Telegram bot is not configured",
-      },
-      { status: 503 },
-    );
-  }
-
   let payload: unknown;
   try {
     payload = await request.json();
@@ -198,35 +195,58 @@ async function handleTelegramRequest(request: Request, env: unknown): Promise<Re
     return jsonResponse({ ok: false, error: "Invalid payload" }, { status: 400 });
   }
 
-  let savedApplication: { saved: boolean; id?: number };
+  // Durable capture first: persist the lead to the database. A failure here is
+  // logged but does not by itself drop the lead if Telegram delivery still works.
+  let savedApplication: { saved: boolean; id?: number } = { saved: false };
+  let dbError: unknown = null;
   try {
     savedApplication = await saveApplication(env, payload as Record<string, unknown>);
   } catch (error) {
+    dbError = error;
     console.error("Application DB save error:", error);
-    return jsonResponse({ ok: false, error: "Application database error" }, { status: 502 });
   }
 
-  const telegramResponse = await fetch(
-    `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
-    {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({
-        chat_id: TELEGRAM_CHAT_ID,
-        text: formatTelegramMessage(payload as Record<string, unknown>),
-        parse_mode: "HTML",
-        disable_web_page_preview: true,
-      }),
-    },
-  );
-
-  if (!telegramResponse.ok) {
-    const text = await telegramResponse.text();
-    console.error(`Telegram API error: ${telegramResponse.status} ${text}`);
-    return jsonResponse({ ok: false, error: "Telegram API error" }, { status: 502 });
+  // Telegram notification is best-effort and optional. The lead is considered
+  // captured as long as at least one durable channel (DB or Telegram) succeeded.
+  let telegramSent = false;
+  if (TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID) {
+    try {
+      const telegramResponse = await fetch(
+        `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
+        {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({
+            chat_id: TELEGRAM_CHAT_ID,
+            text: formatTelegramMessage(payload as Record<string, unknown>),
+            parse_mode: "HTML",
+            disable_web_page_preview: true,
+          }),
+        },
+      );
+      telegramSent = telegramResponse.ok;
+      if (!telegramResponse.ok) {
+        console.error(`Telegram API error: ${telegramResponse.status}`);
+      }
+    } catch (error) {
+      console.error("Telegram request failed:", error);
+    }
   }
 
-  return jsonResponse({ ok: true, application: savedApplication });
+  // Nothing captured anywhere — surface a real failure so the user can retry.
+  if (!savedApplication.saved && !telegramSent) {
+    console.error("Lead capture failed: no durable channel succeeded", dbError ?? "");
+    return jsonResponse(
+      { ok: false, error: "Не удалось сохранить заявку. Попробуйте позже." },
+      { status: 502 },
+    );
+  }
+
+  return jsonResponse({
+    ok: true,
+    application: savedApplication,
+    notified: telegramSent,
+  });
 }
 
 type TelegramWebhookUpdate = {
@@ -403,7 +423,7 @@ async function handleFaqTelegramWebhook(request: Request, env: unknown): Promise
     return jsonResponse({ ok: false, error: "Method not allowed" }, { status: 405 });
   }
 
-  const { FAQ_TELEGRAM_BOT_TOKEN, FAQ_TELEGRAM_CHAT_ID } = getRuntimeEnv(env);
+  const { FAQ_TELEGRAM_BOT_TOKEN, FAQ_TELEGRAM_CHAT_ID, FAQ_WEBHOOK_SECRET } = getRuntimeEnv(env);
 
   if (!FAQ_TELEGRAM_BOT_TOKEN) {
     return jsonResponse(
@@ -413,6 +433,14 @@ async function handleFaqTelegramWebhook(request: Request, env: unknown): Promise
       },
       { status: 503 },
     );
+  }
+
+  // Reject forged requests: Telegram echoes the configured secret in this header.
+  if (
+    FAQ_WEBHOOK_SECRET &&
+    request.headers.get("x-telegram-bot-api-secret-token") !== FAQ_WEBHOOK_SECRET
+  ) {
+    return jsonResponse({ ok: false, error: "Unauthorized" }, { status: 401 });
   }
 
   let update: TelegramWebhookUpdate;
@@ -454,7 +482,7 @@ async function handleFaqTelegramWebhook(request: Request, env: unknown): Promise
 }
 
 function normalizeSiteUrl(value?: string): string {
-  return (value || "https://aspb-partners.ru").replace(/\/+$/, "");
+  return (value || "https://aspb-partner.ru").replace(/\/+$/, "");
 }
 
 function getAdminReplyKeyboard() {
@@ -596,7 +624,8 @@ async function handleAdminTelegramWebhook(request: Request, env: unknown): Promi
     return jsonResponse({ ok: false, error: "Method not allowed" }, { status: 405 });
   }
 
-  const { ADMIN_TELEGRAM_BOT_TOKEN, ADMIN_SITE_URL } = getRuntimeEnv(env);
+  const { ADMIN_TELEGRAM_BOT_TOKEN, ADMIN_TELEGRAM_CHAT_ID, ADMIN_WEBHOOK_SECRET, ADMIN_SITE_URL } =
+    getRuntimeEnv(env);
 
   if (!ADMIN_TELEGRAM_BOT_TOKEN) {
     return jsonResponse(
@@ -606,6 +635,14 @@ async function handleAdminTelegramWebhook(request: Request, env: unknown): Promi
       },
       { status: 503 },
     );
+  }
+
+  // Reject forged requests: only Telegram knows the configured secret token.
+  if (
+    ADMIN_WEBHOOK_SECRET &&
+    request.headers.get("x-telegram-bot-api-secret-token") !== ADMIN_WEBHOOK_SECRET
+  ) {
+    return jsonResponse({ ok: false, error: "Unauthorized" }, { status: 401 });
   }
 
   let update: TelegramWebhookUpdate;
@@ -619,6 +656,16 @@ async function handleAdminTelegramWebhook(request: Request, env: unknown): Promi
   const incomingText = update.message?.text ?? "";
 
   if (!chatId || !incomingText.trim()) {
+    return jsonResponse({ ok: true, skipped: true });
+  }
+
+  // Allowlist: the admin bot exposes lead PII (/partners). Only reply to explicitly
+  // permitted chat IDs so a forged update cannot exfiltrate the applications table.
+  const allowedChatIds = (ADMIN_TELEGRAM_CHAT_ID ?? "")
+    .split(",")
+    .map((id) => id.trim())
+    .filter(Boolean);
+  if (allowedChatIds.length > 0 && !allowedChatIds.includes(String(chatId))) {
     return jsonResponse({ ok: true, skipped: true });
   }
 

@@ -1,0 +1,26 @@
+[Unit]
+Description=profit-partner-path (TanStack Start SSR)
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/profit-partner-path
+Environment=NODE_ENV=production
+Environment=HOST=127.0.0.1
+Environment=PORT=3200
+# Secrets & DB connection (DATABASE_URL, Telegram tokens, webhook secrets). chmod 600.
+EnvironmentFile=/opt/profit-partner-path/.env
+ExecStart=/usr/bin/node server.mjs
+Restart=always
+RestartSec=2
+User=www-data
+Group=www-data
+# Hardening
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+ReadWritePaths=/opt/profit-partner-path
+
+[Install]
+WantedBy=multi-user.target
