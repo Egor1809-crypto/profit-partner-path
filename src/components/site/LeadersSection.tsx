@@ -46,7 +46,7 @@ export function LeadersSection() {
               <div className="overflow-hidden bg-gradient-to-br from-[#eaf6ff] to-[#c9e6ff]">
                 <img
                   src={leader.photo}
-                  alt={leader.name}
+                  alt={`${leader.name} — ${leader.role}, ASPB Partners`}
                   loading="lazy"
                   className="aspect-[1.05/1] w-full object-cover object-top"
                 />

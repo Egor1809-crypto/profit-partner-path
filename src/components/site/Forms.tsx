@@ -44,6 +44,14 @@ const fieldBaseClass =
 const textareaBaseClass =
   "min-h-28 font-sans text-base shadow-sm placeholder:text-slate-400 focus-visible:ring-primary/40";
 
+// Russian phone numbers normalise to 11 digits (a leading 7/8 + 10). We only
+// validate the digit count so masks/spaces/brackets are accepted, but obviously
+// incomplete or junk values are rejected before a dead lead is captured.
+function isValidRuPhone(value: string): boolean {
+  const digits = value.replace(/\D/g, "");
+  return digits.length === 11 && /^[78]/.test(digits);
+}
+
 async function sendTelegramLead(payload: Record<string, FormDataEntryValue | string>) {
   const response = await fetch("/api/telegram", {
     method: "POST",
@@ -112,11 +120,25 @@ export function PartnerForm() {
     }
 
     const form = e.currentTarget;
+    const formData = new FormData(form);
     const payload = {
       type: mode,
-      ...Object.fromEntries(new FormData(form)),
+      ...Object.fromEntries(formData),
       channel,
     };
+
+    const phonesToCheck: Array<[string, FormDataEntryValue | null]> = isClientMode
+      ? [
+          ["Телефон партнёра", formData.get("pphone")],
+          ["Телефон клиента", formData.get("cphone")],
+        ]
+      : [["Телефон", formData.get("phone")]];
+    for (const [label, value] of phonesToCheck) {
+      if (!isValidRuPhone(typeof value === "string" ? value : "")) {
+        setError(`Проверьте поле «${label}»: укажите корректный номер, например +7 999 123-45-67.`);
+        return;
+      }
+    }
 
     setLoading(true);
     setError("");
@@ -362,11 +384,16 @@ export function PartnerForm() {
               />
               <span>
                 Я даю согласие на обработку{" "}
-                <a href="/personal-data" className="underline">
+                <a
+                  href="/personal-data"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline"
+                >
                   персональных данных
                 </a>{" "}
                 и принимаю{" "}
-                <a href="/privacy" className="underline">
+                <a href="/privacy" target="_blank" rel="noopener noreferrer" className="underline">
                   политику конфиденциальности
                 </a>
                 .
@@ -404,124 +431,6 @@ export function PartnerForm() {
             ? "Мы свяжемся с клиентом в ближайшее время и держим вас в курсе."
             : "Специалист по партнёрской программе свяжется с вами."
         }
-      />
-    </section>
-  );
-}
-
-export function ClientForm() {
-  const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [agree, setAgree] = useState(false);
-
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!agree) {
-      setError("Поставьте галочку согласия на обработку персональных данных.");
-      return;
-    }
-
-    const form = e.currentTarget;
-    const payload = {
-      type: "client",
-      ...Object.fromEntries(new FormData(form)),
-    };
-
-    setLoading(true);
-    setError("");
-
-    try {
-      await sendTelegramLead(payload);
-      setLoading(false);
-      setOpen(true);
-      form.reset();
-      setAgree(false);
-    } catch (submitError) {
-      setLoading(false);
-      setError(
-        submitError instanceof Error
-          ? submitError.message
-          : "Не удалось отправить заявку. Попробуйте позже.",
-      );
-    }
-  };
-
-  return (
-    <section id="client-form" className="bg-surface py-20 lg:py-28">
-      <div className="container mx-auto px-4 lg:px-8">
-        <div className="mx-auto grid max-w-6xl items-start gap-12 lg:grid-cols-2">
-          <div>
-            <SectionHeader
-              eyebrow="Заявка клиента"
-              title="Передать клиента"
-              subtitle="Уже есть человек, которому нужна консультация? Передайте его контакты — мы свяжемся с ним в течение 24 часов."
-            />
-          </div>
-          <form
-            onSubmit={onSubmit}
-            className="space-y-4 rounded-2xl border border-border bg-card p-6 shadow-[var(--shadow-card)] md:p-8"
-          >
-            <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              Партнёр
-            </div>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <Field label="Имя партнёра">
-                <Input required name="pname" />
-              </Field>
-              <Field label="Телефон партнёра">
-                <Input required type="tel" name="pphone" />
-              </Field>
-            </div>
-            <div className="pt-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              Клиент
-            </div>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <Field label="Имя клиента">
-                <Input required name="cname" />
-              </Field>
-              <Field label="Телефон клиента">
-                <Input required type="tel" name="cphone" />
-              </Field>
-              <Field label="Город клиента">
-                <Input required name="ccity" />
-              </Field>
-              <Field label="Сумма долга">
-                <Input name="debt" placeholder="Например, 500 000 ₽" />
-              </Field>
-            </div>
-            <Field label="Комментарий по ситуации">
-              <Textarea name="comment" rows={3} />
-            </Field>
-            <label className="flex cursor-pointer items-start gap-3 text-sm text-muted-foreground">
-              <Checkbox
-                checked={agree}
-                onCheckedChange={(v) => {
-                  setAgree(!!v);
-                  if (v) setError("");
-                }}
-                className="mt-0.5 h-5 w-5 shrink-0 rounded-full border-primary/70"
-              />
-              <span>
-                Согласие на обработку{" "}
-                <a href="/personal-data" className="underline">
-                  персональных данных
-                </a>
-                .
-              </span>
-            </label>
-            <Button type="submit" variant="default" size="lg" className="w-full" disabled={loading}>
-              {loading ? "Отправка..." : "Передать заявку"}
-            </Button>
-            {error ? <p className="text-sm text-destructive">{error}</p> : null}
-          </form>
-        </div>
-      </div>
-      <SuccessDialog
-        open={open}
-        onOpenChange={setOpen}
-        title="Спасибо! Заявка клиента передана"
-        description="Мы свяжемся с клиентом в ближайшее время и держим вас в курсе."
       />
     </section>
   );

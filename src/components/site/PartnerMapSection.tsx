@@ -203,7 +203,8 @@ export function PartnerMapSection() {
               <div className="relative aspect-[1.65/1] w-full">
                 <img
                   src="/assets/map/russia-regions.svg"
-                  alt="Карта регионов России"
+                  alt=""
+                  aria-hidden="true"
                   className="absolute inset-0 h-full w-full opacity-70"
                 />
                 {locations.map((location) => (
