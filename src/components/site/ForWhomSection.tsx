@@ -97,13 +97,6 @@ export function SectionHeader({
 }) {
   return (
     <div className="mb-10 max-w-3xl">
-      {eyebrow && (
-        <div
-          className={`mb-5 text-sm font-medium uppercase tracking-[0.18em] ${dark ? "text-white/65" : "text-primary"}`}
-        >
-          {eyebrow}
-        </div>
-      )}
       <h2
         className={`font-display text-4xl uppercase leading-[1.06] md:text-5xl lg:text-6xl ${dark ? "text-white" : "text-foreground"}`}
       >
