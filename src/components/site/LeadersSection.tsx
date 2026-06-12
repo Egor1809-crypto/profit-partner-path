@@ -65,10 +65,7 @@ export function LeadersSection() {
                 />
               </div>
               <div className="p-6">
-                <span className="rounded-full border border-primary/15 px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-primary">
-                  Команда
-                </span>
-                <h3 className="mt-5 font-display text-3xl uppercase leading-tight">
+                <h3 className="font-display text-3xl uppercase leading-tight">
                   {leader.name}
                 </h3>
                 <div className="mt-2 text-sm font-semibold text-primary/75">{leader.role}</div>

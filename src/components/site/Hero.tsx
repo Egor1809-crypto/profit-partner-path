@@ -20,7 +20,7 @@ export function Hero() {
     <section id="top" className="relative min-h-screen overflow-hidden bg-[#eef7ff] text-primary">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_18%,rgb(255_255_255_/_0.95),transparent_34%),linear-gradient(115deg,rgb(255_255_255_/_0.82)_0%,rgb(238_247_255_/_0.9)_45%,rgb(213_235_255_/_0.9)_100%)]" />
       <div className="pointer-events-none absolute -bottom-36 left-0 h-72 w-72 rounded-full bg-white/80 blur-3xl" />
-      <div className="mx-auto grid min-h-screen max-w-[88rem] items-start gap-12 px-5 pb-10 pt-48 lg:grid-cols-[0.92fr_1.08fr] lg:px-10 lg:pb-14 lg:pt-40">
+      <div className="mx-auto grid min-h-screen max-w-[88rem] items-start gap-12 px-5 pb-10 pt-48 lg:grid-cols-[0.82fr_1.18fr] lg:gap-8 lg:px-10 lg:pb-14 lg:pt-40">
         <div className="relative z-10 max-w-3xl">
           <h1 className="font-display max-w-4xl text-[clamp(3rem,4.7vw,5.35rem)] font-medium uppercase leading-[1.02] tracking-[-0.045em] text-foreground">
             <span className="block">Зарабатывайте</span>
@@ -72,7 +72,7 @@ export function Hero() {
         </div>
 
         <div className="relative z-10 hidden self-start pt-0 lg:block">
-          <div className="relative ml-auto max-w-[43rem] overflow-hidden rounded-[2.75rem] border border-white/80 bg-white/55 p-3 shadow-[0_32px_90px_rgb(27_91_150_/_0.18)] backdrop-blur-sm">
+          <div className="relative ml-auto w-full overflow-hidden rounded-[2.75rem] border border-white/80 bg-white/55 p-3 shadow-[0_32px_90px_rgb(27_91_150_/_0.18)] backdrop-blur-sm">
             <video
               src={heroVideo}
               poster={heroPoster}

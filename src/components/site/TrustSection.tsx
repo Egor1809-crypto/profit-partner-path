@@ -19,12 +19,12 @@ export function TrustSection() {
             title="Юридическая команда, которой можно доверить клиента"
           />
           <div>
-            <p className="text-lg leading-relaxed text-white/85">
+            <p className="text-xl font-medium leading-relaxed text-white lg:text-2xl">
               Вы передаёте клиента на правовую оценку ситуации по банкротству физлиц. Юристы
               проверяют документы, объясняют возможные варианты и сопровождают процедуру, если она
               подходит клиенту.
             </p>
-            <p className="mt-6 leading-relaxed text-white/70">
+            <p className="mt-6 text-lg leading-relaxed text-white/90 lg:text-xl">
               Мы не обещаем клиенту списание долгов до анализа ситуации. Итог зависит от документов,
               доходов, имущества и судебной практики по конкретному делу.
             </p>
@@ -35,12 +35,12 @@ export function TrustSection() {
           {stats.map((stat) => (
             <div
               key={stat.l}
-              className="flex min-h-44 flex-col justify-between rounded-[1.25rem] border border-white/12 bg-[#0d1b32]/20 p-5 shadow-[inset_0_0_0_1px_rgb(255_255_255_/_0.05)] lg:min-h-48 lg:p-6"
+              className="flex min-h-40 flex-col rounded-[1.25rem] border border-white/12 bg-[#0d1b32]/20 p-5 shadow-[inset_0_0_0_1px_rgb(255_255_255_/_0.05)] lg:min-h-44 lg:p-6"
             >
               <div className="font-display text-[clamp(2.35rem,3vw,3.5rem)] leading-[1.05] text-white">
                 {stat.n}
               </div>
-              <div className="mt-5 max-w-40 text-sm leading-relaxed text-white/62">{stat.l}</div>
+              <div className="mt-2 max-w-40 text-sm leading-snug text-white">{stat.l}</div>
             </div>
           ))}
         </div>
