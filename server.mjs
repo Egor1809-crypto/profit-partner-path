@@ -215,6 +215,8 @@ const MIME = {
   ".gif": "image/gif",
   ".webp": "image/webp",
   ".avif": "image/avif",
+  ".mp4": "video/mp4",
+  ".webm": "video/webm",
   ".ico": "image/x-icon",
   ".webmanifest": "application/manifest+json",
   ".woff": "font/woff",

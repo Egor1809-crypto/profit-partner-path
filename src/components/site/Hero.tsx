@@ -1,4 +1,6 @@
 import { ArrowUpRight } from "lucide-react";
+import heroVideo from "@/assets/hero/aspb-handshake.mp4";
+import heroPoster from "@/assets/hero/aspb-handshake-poster.webp";
 
 const heroCards = [
   { title: "Стать партнёром", href: "#req-partner" },
@@ -71,14 +73,16 @@ export function Hero() {
 
         <div className="relative z-10 hidden self-start pt-0 lg:block">
           <div className="relative ml-auto max-w-[43rem] overflow-hidden rounded-[2.75rem] border border-white/80 bg-white/55 p-3 shadow-[0_32px_90px_rgb(27_91_150_/_0.18)] backdrop-blur-sm">
-            <img
-              src="/assets/hero/lawyer-portrait.webp"
-              alt="Юрист партнёрской программы ASPB Partners в кабинете"
-              width={688}
-              height={717}
-              fetchPriority="high"
-              decoding="async"
-              className="aspect-[0.96/1] w-full rounded-[2.15rem] object-cover object-center"
+            <video
+              src={heroVideo}
+              poster={heroPoster}
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="auto"
+              aria-label="Партнёрское рукопожатие ASPB Partners"
+              className="aspect-[656/828] w-full rounded-[2.15rem] object-cover object-center"
             />
           </div>
         </div>
