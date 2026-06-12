@@ -2,28 +2,34 @@ import { SectionHeader } from "./ForWhomSection";
 
 const leaders = [
   {
+    name: "Елена Лященко",
+    role: "Руководитель юридического отдела",
+    text: "Контролирует правовую оценку обращений и качество юридического сопровождения.",
+    photo: "/assets/leaders/elena-lyaschenko.webp",
+  },
+  {
+    name: "Дмитрий Сизов",
+    role: "Арбитражный управляющий",
+    text: "Ведёт процедуры банкротства физлиц и сопровождает дела клиентов на всех этапах.",
+    photo: "/assets/leaders/dmitry-sizov.webp",
+  },
+  {
     name: "Василий Артин",
     role: "Генеральный директор",
     text: "Отвечает за подключение партнёров, условия работы и развитие каналов заявок.",
     photo: "/assets/leaders/vasily-artin.webp",
   },
   {
-    name: "Елена Лященко",
-    role: "Руководитель юридического отдела",
-    text: "Контролирует правовую оценку обращений и качество юридического сопровождения.",
-    photo: "/assets/leaders/elena-lyaschenko-new.jpeg",
+    name: "Андрей Абукаев",
+    role: "Арбитражный управляющий",
+    text: "Проверяет сложные ситуации, документы и возможные риски перед процедурой.",
+    photo: "/assets/leaders/andrey-abukaev.webp",
   },
   {
     name: "Александр Герасимов",
     role: "Арбитражный управляющий",
     text: "Следит за коммуникацией с клиентами после передачи заявки.",
     photo: "/assets/leaders/alexander-gerasimov.webp",
-  },
-  {
-    name: "Андрей Абукаев",
-    role: "Арбитражный управляющий",
-    text: "Проверяет сложные ситуации, документы и возможные риски перед процедурой.",
-    photo: "/assets/leaders/andrey-abukaev.webp",
   },
 ];
 
@@ -37,7 +43,7 @@ export function LeadersSection() {
           subtitle="Показываем людей, которые отвечают за обработку заявок, юридическую оценку и сопровождение партнёров."
         />
 
-        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
           {leaders.map((leader) => (
             <article
               key={leader.name}
