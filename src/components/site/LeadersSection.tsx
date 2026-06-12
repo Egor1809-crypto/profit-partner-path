@@ -1,35 +1,42 @@
 import { SectionHeader } from "./ForWhomSection";
+// Imported (not /public) so Vite content-hashes the filenames — updates always
+// bust the immutable browser cache instead of serving a stale photo.
+import artinPhoto from "@/assets/leaders/vasily-artin.webp";
+import lyaschenkoPhoto from "@/assets/leaders/elena-lyaschenko.webp";
+import sizovPhoto from "@/assets/leaders/dmitry-sizov.webp";
+import abukaevPhoto from "@/assets/leaders/andrey-abukaev.webp";
+import gerasimovPhoto from "@/assets/leaders/alexander-gerasimov.webp";
 
 const leaders = [
   {
     name: "Василий Артин",
     role: "Генеральный директор",
     text: "Отвечает за подключение партнёров, условия работы и развитие каналов заявок.",
-    photo: "/assets/leaders/vasily-artin.webp",
+    photo: artinPhoto,
   },
   {
     name: "Елена Лященко",
     role: "Руководитель юридического отдела",
     text: "Контролирует правовую оценку обращений и качество юридического сопровождения.",
-    photo: "/assets/leaders/elena-lyaschenko.webp",
+    photo: lyaschenkoPhoto,
   },
   {
     name: "Дмитрий Сизов",
     role: "Арбитражный управляющий",
     text: "Ведёт процедуры банкротства физлиц и сопровождает дела клиентов на всех этапах.",
-    photo: "/assets/leaders/dmitry-sizov.webp",
+    photo: sizovPhoto,
   },
   {
     name: "Андрей Абукаев",
     role: "Арбитражный управляющий",
     text: "Проверяет сложные ситуации, документы и возможные риски перед процедурой.",
-    photo: "/assets/leaders/andrey-abukaev.webp",
+    photo: abukaevPhoto,
   },
   {
     name: "Александр Герасимов",
     role: "Арбитражный управляющий",
     text: "Следит за коммуникацией с клиентами после передачи заявки.",
-    photo: "/assets/leaders/alexander-gerasimov.webp",
+    photo: gerasimovPhoto,
   },
 ];
 
