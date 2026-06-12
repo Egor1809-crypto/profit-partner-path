@@ -1,4 +1,4 @@
-import { ArrowUpRight, CalendarDays, ClipboardCheck, MessageSquareText, Play } from "lucide-react";
+import { CalendarDays, ClipboardCheck, MessageSquareText, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SectionHeader } from "./ForWhomSection";
 
@@ -65,19 +65,15 @@ export function WebinarsSection() {
                 key={webinar.title}
                 className="group flex min-h-80 flex-col rounded-md border border-border bg-white p-6 shadow-[var(--shadow-card)] transition-transform hover:-translate-y-1"
               >
-                <div className="flex items-start justify-between gap-4">
+                <div className="flex items-start gap-4">
                   <span className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
                     <Icon className="h-6 w-6" />
                   </span>
-                  <ArrowUpRight className="h-6 w-6 text-primary transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
                 </div>
                 <h3 className="mt-8 font-display text-3xl uppercase leading-tight">
                   {webinar.title}
                 </h3>
                 <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{webinar.text}</p>
-                <div className="mt-auto pt-8 text-xs font-semibold uppercase tracking-[0.18em] text-primary/70">
-                  {webinar.meta}
-                </div>
               </article>
             );
           })}

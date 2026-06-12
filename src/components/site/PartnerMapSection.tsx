@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ArrowUpRight, BadgeCheck, ChevronDown, MapPin, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SectionHeader } from "./ForWhomSection";
+import russiaMap from "@/assets/map/russia-regions.svg";
 
 const locations = [
   {
@@ -202,7 +203,7 @@ export function PartnerMapSection() {
             <div className="relative mx-auto w-full max-w-[90rem]">
               <div className="relative aspect-[1.65/1] w-full">
                 <img
-                  src="/assets/map/russia-regions.svg"
+                  src={russiaMap}
                   alt=""
                   aria-hidden="true"
                   className="absolute inset-0 h-full w-full opacity-70"

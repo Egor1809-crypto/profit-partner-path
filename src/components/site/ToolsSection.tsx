@@ -1,4 +1,3 @@
-import { ArrowUpRight } from "lucide-react";
 import { SectionHeader } from "./ForWhomSection";
 
 const articles = [
@@ -33,11 +32,10 @@ export function ToolsSection() {
               <time className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
                 {article.date}
               </time>
-              <h3 className="mt-8 font-display text-3xl uppercase leading-tight">
+              <h3 className="mt-8 flex min-h-[6.5rem] items-start font-display text-3xl uppercase leading-tight">
                 {article.title}
               </h3>
               <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{article.text}</p>
-              <ArrowUpRight className="mt-auto h-6 w-6 text-primary" />
             </article>
           ))}
         </div>

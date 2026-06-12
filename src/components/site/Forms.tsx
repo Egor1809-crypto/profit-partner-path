@@ -205,14 +205,14 @@ export function PartnerForm() {
                 Передать клиента
               </button>
             </div>
-            <ul className="space-y-3 text-sm">
+            <ul className="space-y-5 text-2xl lg:text-[2.2rem]">
               {highlights.map((t) => (
                 <li
                   key={t}
-                  className={`flex items-center gap-2 ${isClientMode ? "text-primary/75" : "text-white/80"}`}
+                  className={`flex items-center gap-3 leading-snug ${isClientMode ? "text-primary/75" : "text-white/80"}`}
                 >
                   <CheckCircle2
-                    className={`h-5 w-5 ${isClientMode ? "text-primary" : "text-blue-100"}`}
+                    className={`h-8 w-8 shrink-0 ${isClientMode ? "text-primary" : "text-blue-100"}`}
                   />
                   {t}
                 </li>
