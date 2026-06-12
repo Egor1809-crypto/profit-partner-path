@@ -82,7 +82,7 @@ export function Hero() {
               playsInline
               preload="auto"
               aria-label="Партнёрское рукопожатие ASPB Partners"
-              className="aspect-[656/828] w-full rounded-[2.15rem] object-cover object-center"
+              className="aspect-[4/3] w-full rounded-[2.15rem] object-cover object-center"
             />
           </div>
         </div>
