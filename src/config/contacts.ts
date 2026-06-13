@@ -3,7 +3,7 @@ export const contacts = [
   { label: "Telegram", value: "@PARTNER_BOT", href: "https://t.me/PARTNER_BOT" },
   {
     label: "Email",
-    value: "bankrotstvo-partner@yandex.ru",
-    href: "mailto:bankrotstvo-partner@yandex.ru",
+    value: "support@aspb-partner.ru",
+    href: "mailto:support@aspb-partner.ru",
   },
 ];
