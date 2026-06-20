@@ -26,20 +26,20 @@ export function Hero() {
             <span className="block">на передаче клиентов</span>
             <span className="block">на банкротство физлиц</span>
           </h1>
-          <p className="mt-7 max-w-2xl text-base leading-relaxed text-primary/76 lg:text-lg">
+          <p className="mt-7 max-w-2xl text-base leading-relaxed text-foreground lg:text-lg">
             Передавайте нам обращения клиентов с долгами. Юристы проверят ситуацию, свяжутся с
             клиентом, объяснят возможный порядок процедуры и возьмут сопровождение, если банкротство
             действительно подходит.
           </p>
 
-          <div className="mt-8 flex max-w-4xl items-center gap-3 overflow-x-auto pb-2 text-sm font-semibold text-primary sm:overflow-visible lg:text-base">
+          <div className="mt-8 flex max-w-4xl items-center gap-3 overflow-x-auto pb-2 text-sm font-medium text-foreground sm:overflow-visible lg:text-base">
             {heroSteps.map((step, index) => (
               <div key={step} className="flex shrink-0 items-center gap-3">
                 <span className="whitespace-nowrap rounded-full bg-white/70 px-5 py-2.5 shadow-[0_14px_36px_rgb(29_85_136_/_0.08)] backdrop-blur-sm">
                   {step}
                 </span>
                 {index < heroSteps.length - 1 ? (
-                  <span className="text-2xl text-primary/35">→</span>
+                  <span className="text-2xl text-foreground/30">→</span>
                 ) : null}
               </div>
             ))}
@@ -49,7 +49,7 @@ export function Hero() {
             {heroBenefits.map((benefit) => (
               <div
                 key={benefit}
-                className="border-l border-primary/25 bg-white/45 px-4 py-3 text-sm font-medium leading-snug text-primary/82 backdrop-blur-sm"
+                className="border-l border-foreground/15 bg-white/45 px-4 py-3 text-sm font-medium leading-snug text-foreground backdrop-blur-sm"
               >
                 {benefit}
               </div>
