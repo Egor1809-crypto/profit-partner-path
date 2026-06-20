@@ -51,7 +51,7 @@ export function PartnerPlatformsSection() {
                 <h3 className="mt-8 font-display text-3xl uppercase leading-tight">
                   {platform.title}
                 </h3>
-                <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+                <p className="mt-4 text-sm leading-relaxed text-foreground">
                   {platform.text}
                 </p>
               </article>
