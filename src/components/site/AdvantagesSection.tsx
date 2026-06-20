@@ -69,7 +69,7 @@ export function AdvantagesSection() {
                   <h3 className="mt-6 font-display text-[2.1rem] uppercase leading-[0.95] tracking-[-0.03em]">
                     {advantage.title}
                   </h3>
-                  <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+                  <p className="mt-4 text-sm leading-relaxed text-foreground">
                     {advantage.description}
                   </p>
                 </div>
@@ -77,7 +77,7 @@ export function AdvantagesSection() {
                   {advantage.items.map((item) => (
                     <li
                       key={item}
-                      className="flex gap-3 text-[0.92rem] leading-relaxed text-muted-foreground"
+                      className="flex gap-3 text-[0.92rem] leading-relaxed text-foreground"
                     >
                       <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary/60" />
                       <span>{item}</span>
