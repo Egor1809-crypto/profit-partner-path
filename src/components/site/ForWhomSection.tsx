@@ -40,7 +40,7 @@ export function ForWhomSection() {
             eyebrow="// Услуги"
             title="Что происходит после передачи клиента на банкротство физлиц"
           />
-          <p className="max-w-md text-base leading-relaxed text-muted-foreground">
+          <p className="max-w-md text-base leading-relaxed text-foreground">
             Вы приводите человека, которому нужна юридическая помощь по долгам. Компания берёт на
             себя правовую оценку, консультацию, проверку документов и сопровождение процедуры, если
             она подходит клиенту.
@@ -60,7 +60,7 @@ export function ForWhomSection() {
               tabIndex={0}
               className="group relative grid gap-4 overflow-hidden bg-white py-6 outline-none transition-colors sm:grid-cols-[4rem_1fr] sm:items-center lg:min-h-[11rem] lg:grid-cols-[4rem_minmax(0,1fr)_12rem]"
             >
-              <span className="font-display text-3xl text-primary">{service.number}</span>
+              <span className="font-display text-3xl text-foreground">{service.number}</span>
               <div>
                 <h3 className="font-display text-3xl uppercase">{service.title}</h3>
                 <p className="mt-2 max-w-lg text-sm leading-relaxed text-foreground">
