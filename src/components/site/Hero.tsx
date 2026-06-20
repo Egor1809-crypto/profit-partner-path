@@ -49,7 +49,7 @@ export function Hero() {
             {heroBenefits.map((benefit) => (
               <div
                 key={benefit}
-                className="border-l border-foreground/15 bg-white/45 px-4 py-3 text-sm font-medium leading-snug text-foreground backdrop-blur-sm"
+                className="border-l border-foreground/15 bg-white/45 px-4 py-3 text-base font-medium leading-snug text-foreground backdrop-blur-sm"
               >
                 {benefit}
               </div>
