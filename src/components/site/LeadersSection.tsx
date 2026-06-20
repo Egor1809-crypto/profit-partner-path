@@ -68,8 +68,8 @@ export function LeadersSection() {
                 <h3 className="font-display text-3xl uppercase leading-tight">
                   {leader.name}
                 </h3>
-                <div className="mt-2 text-sm font-semibold text-primary/75">{leader.role}</div>
-                <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{leader.text}</p>
+                <div className="mt-2 text-sm leading-relaxed text-foreground">{leader.role}</div>
+                <p className="mt-4 text-sm leading-relaxed text-foreground">{leader.text}</p>
               </div>
             </article>
           ))}
