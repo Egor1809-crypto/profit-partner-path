@@ -185,13 +185,14 @@ export function PartnerMapSection() {
           eyebrow="// Карта партнёров"
           title="Сеть офисов по всей России"
           subtitle="Работаем с партнёрами и клиентами дистанционно. Очные офисы и точки присутствия подключаются после проверки заявки администратором."
+          subtitleClassName="text-foreground font-medium"
         />
 
         <div className="mt-8 flex flex-wrap gap-2">
           {keyCities.map((city) => (
             <span
               key={city}
-              className="rounded-full border border-primary/15 bg-white px-4 py-2 text-sm font-medium text-primary shadow-sm"
+              className="rounded-full border border-primary/15 bg-white px-4 py-2 text-sm font-medium text-foreground shadow-sm"
             >
               {city}
             </span>

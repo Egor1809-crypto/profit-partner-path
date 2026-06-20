@@ -28,25 +28,10 @@ export function PartnerPlatformsSection() {
   return (
     <section id="platforms" className="bg-surface py-20 lg:py-28">
       <div className="mx-auto max-w-7xl px-5 lg:px-10">
-        <div className="grid gap-10 lg:grid-cols-[0.88fr_1.12fr] lg:items-start">
-          <SectionHeader
-            eyebrow="// Партнёрские платформы"
-            title="Сайты, площадки и каналы, через которые приходят обращения"
-          />
-
-          <div className="rounded-[1.5rem] border border-primary/15 bg-[#cfeeff] p-5 text-primary shadow-[0_24px_70px_rgb(29_85_136_/_0.12)] sm:p-6">
-            <div className="flex items-center justify-between gap-4">
-              <div className="font-display text-3xl uppercase leading-tight text-primary">
-                Источник → заявка → проверка → договор → выплата
-              </div>
-              <ArrowUpRight className="h-6 w-6 shrink-0 text-primary" />
-            </div>
-            <p className="mt-5 max-w-xl text-lg leading-relaxed text-primary/80">
-              Все каналы сводятся в понятную цепочку: заявка фиксируется за источником, проходит
-              проверку, попадает в работу и отображается в статусах партнёра.
-            </p>
-          </div>
-        </div>
+        <SectionHeader
+          eyebrow="// Партнёрские платформы"
+          title="Сайты, площадки и каналы, через которые приходят обращения"
+        />
 
         <div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           {platforms.map((platform) => {
