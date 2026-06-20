@@ -29,13 +29,13 @@ export function ToolsSection() {
               key={article.title}
               className="flex min-h-72 flex-col bg-background p-6 lg:p-8"
             >
-              <time className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+              <time className="text-xs uppercase tracking-[0.2em] text-foreground">
                 {article.date}
               </time>
               <h3 className="mt-8 flex min-h-[6.5rem] items-start font-display text-3xl uppercase leading-tight">
                 {article.title}
               </h3>
-              <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{article.text}</p>
+              <p className="mt-4 text-sm leading-relaxed text-foreground">{article.text}</p>
             </article>
           ))}
         </div>
