@@ -89,11 +89,13 @@ export function SectionHeader({
   title,
   subtitle,
   dark,
+  subtitleClassName,
 }: {
   eyebrow?: string;
   title: string;
   subtitle?: string;
   dark?: boolean;
+  subtitleClassName?: string;
 }) {
   return (
     <div className="mb-10 max-w-3xl">
@@ -104,7 +106,7 @@ export function SectionHeader({
       </h2>
       {subtitle && (
         <p
-          className={`mt-5 max-w-xl leading-relaxed ${dark ? "text-white/72" : "text-muted-foreground"}`}
+          className={`mt-5 max-w-xl leading-relaxed ${subtitleClassName ?? (dark ? "text-white/72" : "text-muted-foreground")}`}
         >
           {subtitle}
         </p>

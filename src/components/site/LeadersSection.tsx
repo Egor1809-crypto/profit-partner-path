@@ -48,6 +48,7 @@ export function LeadersSection() {
           eyebrow="// Руководители направления"
           title="Кто отвечает за партнёрское направление"
           subtitle="Показываем людей, которые отвечают за обработку заявок, юридическую оценку и сопровождение партнёров."
+          subtitleClassName="text-foreground font-medium"
         />
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
