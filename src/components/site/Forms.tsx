@@ -102,7 +102,7 @@ export function PartnerForm() {
   const textareaClass = isClientMode
     ? `${textareaBaseClass} border-white/35 bg-white text-[#101828]`
     : `${textareaBaseClass} border-primary/20 bg-[#f4f8ff] text-[#101828]`;
-  const labelClass = isClientMode ? "text-white" : "text-[#0088df]";
+  const labelClass = isClientMode ? "text-white" : "text-foreground";
   const mutedTextClass = isClientMode ? "text-white/78" : "text-slate-600";
   const highlights = isClientMode ? clientHighlights : partnerHighlights;
 
@@ -226,7 +226,7 @@ export function PartnerForm() {
             >
               <div
                 className={`font-display text-3xl uppercase leading-tight ${
-                  isClientMode ? "text-white" : "text-primary"
+                  isClientMode ? "text-white" : "text-foreground"
                 }`}
               >
                 {isClientMode ? "Заявка: передать клиента" : "Заявка на партнёрство"}
