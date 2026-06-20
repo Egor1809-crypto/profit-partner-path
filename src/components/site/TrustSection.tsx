@@ -24,7 +24,7 @@ export function TrustSection() {
               проверяют документы, объясняют возможные варианты и сопровождают процедуру, если она
               подходит клиенту.
             </p>
-            <p className="mt-6 text-lg leading-relaxed text-white/90 lg:text-xl">
+            <p className="mt-6 text-lg font-medium leading-relaxed text-white lg:text-xl">
               Мы не обещаем клиенту списание долгов до анализа ситуации. Итог зависит от документов,
               доходов, имущества и судебной практики по конкретному делу.
             </p>
@@ -37,7 +37,7 @@ export function TrustSection() {
               key={stat.l}
               className="flex min-h-40 flex-col rounded-[1.25rem] border border-white/12 bg-[#0d1b32]/20 p-5 shadow-[inset_0_0_0_1px_rgb(255_255_255_/_0.05)] lg:min-h-44 lg:p-6"
             >
-              <div className="font-display text-[clamp(2.35rem,3vw,3.5rem)] leading-[1.05] text-white">
+              <div className="text-[clamp(2.35rem,3vw,3.5rem)] font-semibold leading-[1.05] text-white">
                 {stat.n}
               </div>
               <div className="mt-2 max-w-40 text-sm leading-snug text-white">{stat.l}</div>
